@@ -26,20 +26,18 @@ public class AppConfig {
 
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(Authorize -> Authorize
-                		.requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER","ADMIN")
-                                .requestMatchers("/api/**").authenticated()
-                                
-                                .anyRequest().permitAll()
-                )
+                        .requestMatchers("/api/admin/**").hasAnyRole("RESTAURANT_OWNER", "ADMIN")
+                        .requestMatchers("/api/**").authenticated()
+
+                        .anyRequest().permitAll())
                 .addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-               
-		
-		return http.build();
-		
-	}
-	
+
+        return http.build();
+
+    }
+
     // CORS Configuration
     private CorsConfigurationSource corsConfigurationSource() {
         return new CorsConfigurationSource() {
@@ -47,10 +45,10 @@ public class AppConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(Arrays.asList(
-                    "http://localhost:3000",
-                    "https://anarul-meal.vercel.app",
-                    "http://localhost:4200"
-                ));
+                        "http://localhost:3000",
+                        "https://anarul-meal.vercel.app",
+                        "https://mealmingle-sk-anaruls-projects.vercel.app/",
+                        "http://localhost:4200"));
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
@@ -63,7 +61,7 @@ public class AppConfig {
 
     @Bean
     PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+        return new BCryptPasswordEncoder();
+    }
 
 }
